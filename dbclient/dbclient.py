@@ -198,7 +198,9 @@ class dbclient:
                 continue
 
             http_status_code = raw_results.status_code
-            if http_status_code in dbclient.http_error_codes and not do_not_throw:
+            if http_status_code == "500":
+                logging.warn(f"CAUGHT 500 for notebook {json_params}")
+            elif http_status_code in dbclient.http_error_codes and not do_not_throw:
                 raise Exception(f"Error: GET request with params: {json_params} failed with code {http_status_code}\n{raw_results.text}")
             results = raw_results.json()
             if logging_utils.check_error(results):

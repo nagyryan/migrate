@@ -47,7 +47,7 @@ class dbclient:
     # 401: Unauthorized
     # 500: Internal Server Error
     # 502: Bad Gateway
-    http_error_codes = [401, 500, 502] + http_retry_codes
+    http_error_codes = [401, 502] + http_retry_codes
 
     def __init__(self, configs):
         self._profile = configs['profile']
@@ -198,9 +198,7 @@ class dbclient:
                 continue
 
             http_status_code = raw_results.status_code
-            if http_status_code == "500":
-                logging.warn(f"CAUGHT 500 for notebook {json_params}")
-            elif http_status_code in dbclient.http_error_codes and not do_not_throw:
+            if http_status_code in dbclient.http_error_codes and not do_not_throw:
                 raise Exception(f"Error: GET request with params: {json_params} failed with code {http_status_code}\n{raw_results.text}")
             results = raw_results.json()
             if logging_utils.check_error(results):

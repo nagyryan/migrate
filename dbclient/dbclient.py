@@ -199,7 +199,7 @@ class dbclient:
 
             http_status_code = raw_results.status_code
             if http_status_code in dbclient.http_error_codes and not do_not_throw:
-                raise Exception("Error: GET request failed with code {}\n{}".format(http_status_code, raw_results.text))
+                raise Exception(f"Error: GET request with params: {json_params} failed with code {http_status_code}\n{raw_results.text}")
             results = raw_results.json()
             if logging_utils.check_error(results):
                 logging.warn(json.dumps(results) + '\n')
